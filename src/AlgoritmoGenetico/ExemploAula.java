@@ -42,6 +42,10 @@ public class ExemploAula {
 //                Seta o primeiro cromossomo, vindo do elitismo da atual
                 populacaoIntermediaria[0] = elitismo(populacao);
 
+                for (int i = 0; i < populacaoIntermediaria[0].length; i++) {
+                    System.out.println("Peso - " + i + " - " + populacaoIntermediaria[0][i]);
+                }
+
                 if (populacaoIntermediaria[0][20] == 0) {
                     System.out.println("Solução encontrada");
                     System.out.println("Cargas - Pessoa 0");

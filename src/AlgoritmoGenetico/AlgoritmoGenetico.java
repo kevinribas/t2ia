@@ -1,5 +1,7 @@
 package src.AlgoritmoGenetico;
 
+import java.util.Random;
+
 import src.Rede.Rede;
 
 
@@ -12,6 +14,7 @@ public class AlgoritmoGenetico {
 
 
     public AlgoritmoGenetico() {
+        Random aleatorio = new Random();
         this.populacao = new Cromossomo[TAMANHO_POPULACAO];
 
         for (int i = 0; i < this.populacao.length; i++) {
@@ -30,21 +33,49 @@ public class AlgoritmoGenetico {
             aptidao(cromossomo);
         }
 //        } // Fim da geração
+
+        // Seta o primeiro cromossomo, vindo do elitismo da atual
+        populacaoIntermediaria[0] = elitismo(populacao);
+
+        crossOver(populacao, populacaoIntermediaria);
+        populacao = populacaoIntermediaria;
+
+        if (aleatorio.nextInt(2) == 0) {
+            mutacao(populacao);
+        }
     }
 
-    public void mutacao() {
+    public static void mutacao(Cromossomo[] _populacao) {
     }
 
-    public void aptidao(Cromossomo c) {
+    public void aptidao(Cromossomo _cromossomo) {
 //        FINGINDO QUE FEZ UM CALCULO:
-        c.aptidao = 0.3d;
+        _cromossomo.aptidao = 0.3d;
     }
 
-    public Cromossomo[] elitismo() {
-        return null;
+    // VERIFICAR NOVAMENTE
+    public Cromossomo elitismo(Cromossomo[] _populacao) {
+        int pesosSize = _populacao[0].getTamanhoPesos();
+        Cromossomo aux = new Cromossomo();
+        int linha = 0;
+        double menorValor = _populacao[0].getPesos(TAMANHO_POPULACAO-1);
+
+        for (int i = 1; i < TAMANHO_POPULACAO; i++) {
+            if (_populacao[i].getPesos(TAMANHO_POPULACAO-1) < menorValor) {
+                menorValor = _populacao[i].getPesos(TAMANHO_POPULACAO-1);
+                linha = i;
+            }
+        }
+
+        for (int j = 0; j < pesosSize; j++) {
+            aux.setPeso(j, _populacao[linha].getPesos(j));
+        }
+
+
+        return aux; // remover depois de definir a funcao
     }
 
-    public void crossOver() {
+    public void crossOver(Cromossomo[] _populacao, Cromossomo[] _populacaoIntermediaria) {
     }
 
     public void torneio() {
