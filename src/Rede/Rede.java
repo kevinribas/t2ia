@@ -1,6 +1,7 @@
+package src.Rede;
 
 /**
- * Escreva a descrição da classe Rede aqui.
+ * Escreva a descrição da classe src.Rede.src.Rede aqui.
  * 
  * @author Silvia 
  * @version 12/11/2020
@@ -61,11 +62,11 @@ public class Rede
         String msg = "Pesos da rede\n";
         msg = msg + "Camada Oculta\n";
         for(int i=0;i<camadaOculta.length; i++){
-            msg = msg + "Neuronio " + i + ": " + camadaOculta[i] + "\n";
+            msg = msg + "src.Rede.Neuronio " + i + ": " + camadaOculta[i] + "\n";
         }
         msg = msg + "Camada Saida\n";
         for(int i=0;i<camadaSaida.length; i++){
-            msg = msg + "Neuronio " + i + ": " + camadaSaida[i] + "\n";
+            msg = msg + "src.Rede.Neuronio " + i + ": " + camadaSaida[i] + "\n";
         }
         return msg;
     }

@@ -1,6 +1,6 @@
-
+package src.Jogo;
 /**
- * Write a description of class JogoDaVelha here.
+ * Write a description of class src.Jogo.JogoDaVelha here.
  * 
  * @author (your name) 
  * @version (a version number or a date)

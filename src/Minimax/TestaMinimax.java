@@ -1,6 +1,9 @@
+package src.Minimax;
+
+import src.Rede.Sucessor;
 
 /**
- * Write a description of class Tabuleiro here.
+ * Write a description of class src.Jogo.Tabuleiro here.
  * 
  * @author (your name) 
  * @version (a version number or a date)
@@ -23,18 +26,18 @@ public class TestaMinimax
     }
     
     /**
-     * Faz a jogada do computador, usando o algoritmo Minimax
+     * Faz a jogada do computador, usando o algoritmo src.Minimax.src.Minimax
      */
     public Sucessor joga(){
         Minimax mini = new Minimax(velha);
-        //Sucessor melhor = mini.getMelhor(); //chama versão clássica
+        //src.Rede.Sucessor melhor = mini.getMelhor(); //chama versão clássica
         return mini.getMelhorAB(); //chama versão Alfa Beta Pruning
     }    
     /**
      * Gera um String do estado atual do tabuleiro
      */
     public String toString(){
-        String saida=" ----- Jogo da Velha -----\n";
+        String saida=" ----- src.Jogo da Velha -----\n";
         for(int i=0; i<3; i++) saida = saida + "\t"+i;
         saida = saida + "\n";
         for(int i=0; i<3; i++){

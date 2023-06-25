@@ -1,6 +1,9 @@
+package src.Minimax;
+
+import src.Rede.Sucessor;
 
 /**
- * Write a description of class Minimax here.
+ * Write a description of class src.Minimax.src.Minimax here.
  * 
  * @author Silvia Moraes 
  * @version 10/04/2017
@@ -11,7 +14,7 @@ public class Minimax
     private char[][] estado;
     
     /**
-     * Minimax: algoritmo de busca adversária
+     * src.Minimax.src.Minimax: algoritmo de busca adversária
      * @param estado corresponde ao estado atual do tabuleiro
      */
     public Minimax(char [][]estado){
@@ -19,8 +22,8 @@ public class Minimax
     }
     
     /**
-     * Encontra o melhor estado sucessor ao estado atual. Usa a versão clássica do Minimax.
-     * @return devolve um objeto Sucessor. Esse objeto contém o estado sucessor e sua função de utilidade.
+     * Encontra o melhor estado sucessor ao estado atual. Usa a versão clássica do src.Minimax.src.Minimax.
+     * @return devolve um objeto src.Rede.Sucessor. Esse objeto contém o estado sucessor e sua função de utilidade.
      */
     public Sucessor getMelhor(){
         melhor = algoritmo(estado,false, livres(estado));     
@@ -28,8 +31,8 @@ public class Minimax
     }
     
      /**
-     * Encontra o melhor estado sucessor ao estado atual. Usa a versão Alfa Beta Pruning do Minimax.
-     * @return devolve um objeto Sucessor. Esse objeto contém o estado sucessor e sua função de utilidade.
+     * Encontra o melhor estado sucessor ao estado atual. Usa a versão Alfa Beta Pruning do src.Minimax.src.Minimax.
+     * @return devolve um objeto src.Rede.Sucessor. Esse objeto contém o estado sucessor e sua função de utilidade.
      */
     public Sucessor getMelhorAB(){
         melhor = algoritmoAB(estado,false, livres(estado),-999,999);   
@@ -158,7 +161,7 @@ public class Minimax
     }
     
     /**
-     * Algoritmo Minimax - versão clássica
+     * Algoritmo src.Minimax.src.Minimax - versão clássica
      * @param estado corresponde ao estado atual
      * @param jogador: true é usuário;false é o computador
      * @param profundidade também corresponde a quantidade de células livres
@@ -204,7 +207,7 @@ public class Minimax
     }
     
     /**
-     * Algoritmo Minimax - versão Alfa Beta Pruning
+     * Algoritmo src.Minimax.src.Minimax - versão Alfa Beta Pruning
      * @param estado corresponde ao estado atual
      * @param jogador: true é usuário;false é o computador
      * @param profundidade também corresponde a quantidade de células livres
@@ -212,7 +215,7 @@ public class Minimax
      * @param beta corresponde ao melhor valor MIN
      * @return devolve o melhor estado sucessor para o estado atual
      */    
-    public Sucessor algoritmoAB(char estado[][], boolean jogador, int profundidade,int alfa,int beta){    
+    public Sucessor algoritmoAB(char estado[][], boolean jogador, int profundidade, int alfa, int beta){
         int valor = utilidade(estado,profundidade);
         if(valor!=100) return new Sucessor(estado,valor);
         

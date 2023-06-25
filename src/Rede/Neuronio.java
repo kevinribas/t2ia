@@ -1,6 +1,7 @@
+package src.Rede;
 
 /**
- * Escreva a descrição da classe Neuronio aqui.
+ * Escreva a descrição da classe src.Rede.Neuronio aqui.
  * 
  * @author Silvia
  * @version 12/11/2020, atualizado em 30/05/2023
