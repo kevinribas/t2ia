@@ -24,10 +24,10 @@ public class AlgoritmoGenetico {
 //        for (int g = 1; g <= 30; g++) { // inicio da geracao
 //            System.out.println("\n\nGeração: " + g);
 
-        for (int i = 0; i < populacao.length; i++) {
+        for (Cromossomo cromossomo : populacao) {
 //            rede.setPesosNaRede();
 //            Pra cada cromossomo:
-            aptidao(populacao[i]);
+            aptidao(cromossomo);
         }
 //        } // Fim da geração
     }
@@ -40,7 +40,8 @@ public class AlgoritmoGenetico {
         c.aptidao = 0.3d;
     }
 
-    public void elitismo() {
+    public Cromossomo[] elitismo() {
+        return null;
     }
 
     public void crossOver() {
