@@ -57,9 +57,8 @@ public class Minimax
      * @param estado corresponde ao estado (tabuleiro) atual
      * @param caracter corresponde ao caracter (X ou O) com o qual os sucessores devem ser gerados
      */
-    public void geraVizinhos(char[][][] vizinhos, char [][]estado, char caracter){
+    public void geraVizinhos(char[][][] vizinhos, char [][]estado, char caracter,int [][] posicoes){
         //Guarda as posições livres
-        int [][] posicoes = new int[vizinhos.length][2];
         int k=0;
         for(int i=0; i<3; i++)
            for(int j=0; j<3; j++)
@@ -84,7 +83,7 @@ public class Minimax
      * Função utilidade: verifica se alguém ganhou
      * @param atual corresponde ao estado (tabuleiro) atual
      * @param profundidade corresponde à profundidade atual 
-     * @return devolve -1 se o usuário ganhou; +1 se o computador ganhou; 0 se houve empate e 100 se ainda há jogo
+     * @return devolve -1 se o X ganhou; +1 se o O ganhou; 0 se houve empate e 100 se ainda há jogo
      */  
     public int utilidade(char [][]atual, int profundidade){
       
@@ -172,10 +171,11 @@ public class Minimax
         
         int indSuc = 0;
         char[][][]vizinhos = new char [profundidade][3][3];
+        int [][] posicoes = new int[vizinhos.length][2];
         
         if(jogador){   //adversário
             int menor  = 999;
-            geraVizinhos(vizinhos,estado,'X');
+            geraVizinhos(vizinhos,estado,'X',posicoes);
             
             for(int v=0; v<vizinhos.length;v++){
                 Sucessor atual = algoritmo(vizinhos[v],false,profundidade-1);
@@ -185,11 +185,11 @@ public class Minimax
                     indSuc = v;
                 }
             }
-            return new Sucessor(vizinhos[indSuc],menor);
+            return new Sucessor(vizinhos[indSuc],menor,posicoes[indSuc][0],posicoes[indSuc][1]);
         }
         else{
             int maior = -999;
-            geraVizinhos(vizinhos,estado,'O');
+            geraVizinhos(vizinhos,estado,'O',posicoes);
             
             for(int v=0; v<vizinhos.length;v++){
                 Sucessor atual = algoritmo(vizinhos[v],true,profundidade-1);
@@ -199,7 +199,7 @@ public class Minimax
                     indSuc = v;
                 }
             }
-            return new Sucessor(vizinhos[indSuc],maior);
+            return new Sucessor(vizinhos[indSuc],maior,posicoes[indSuc][0],posicoes[indSuc][1]);
         }
     }
     
@@ -218,10 +218,11 @@ public class Minimax
         
         int indSuc = 0;
         char[][][]vizinhos = new char [profundidade][3][3];
+        int [][] posicoes = new int[vizinhos.length][2];
         
         if(jogador){   //adversário
             int menor  = 999;
-            geraVizinhos(vizinhos,estado,'X');
+            geraVizinhos(vizinhos,estado,'X',posicoes);
             
             for(int v=0; v<vizinhos.length;v++){
                 Sucessor atual = algoritmoAB(vizinhos[v],false,profundidade-1,alfa,beta);
@@ -230,14 +231,14 @@ public class Minimax
                     menor  = valor;
                     indSuc = v;
                 }
-                if(menor<alfa) return new Sucessor(vizinhos[indSuc],menor);
+                if(menor<alfa) return new Sucessor(vizinhos[indSuc],menor,posicoes[indSuc][0],posicoes[indSuc][1]);
                 if(valor<beta) beta = valor;
             }
-            return new Sucessor(vizinhos[indSuc],menor);
+            return new Sucessor(vizinhos[indSuc],menor,posicoes[indSuc][0],posicoes[indSuc][1]);
         }
         else{
             int maior = -999;
-            geraVizinhos(vizinhos,estado,'O');
+            geraVizinhos(vizinhos,estado,'O',posicoes);
             for(int v=0; v<vizinhos.length;v++){
                 Sucessor atual = algoritmoAB(vizinhos[v],true,profundidade-1,alfa,beta);
                 valor = atual.getValor();
@@ -245,10 +246,10 @@ public class Minimax
                     maior = valor;
                     indSuc = v;
                 }
-                if(maior>beta) return new Sucessor(vizinhos[indSuc],maior);
+                if(maior>beta) return new Sucessor(vizinhos[indSuc],maior,posicoes[indSuc][0],posicoes[indSuc][1]);
                 if(valor>alfa) alfa = valor;
             }
-            return new Sucessor(vizinhos[indSuc],maior);
+            return new Sucessor(vizinhos[indSuc],maior,posicoes[indSuc][0],posicoes[indSuc][1]);
         }
     }
 
