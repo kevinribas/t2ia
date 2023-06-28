@@ -97,7 +97,7 @@ public class AlgoritmoGenetico {
     }
 
     public double aptidao(int[][] tabuleiro) {
-        double pontuacao = (double) 0;
+        double pontuacao = 0d;
     
         if (venceu(tabuleiro, 1)) {
             pontuacao+= (double) 100;
@@ -113,9 +113,9 @@ public class AlgoritmoGenetico {
 
     private int numeroDeRounds(int[][] tabuleiro) {
         int qntRodadas = 0;
-        for (int i = 0; i < tabuleiro.length; i++) {
+        for (int[] linha : tabuleiro) {
             for (int j = 0; j < tabuleiro.length; j++) {
-                if (tabuleiro[i][j] == 1) {
+                if (linha[j] == 1) {
                     qntRodadas++;
                 }
             }
@@ -178,16 +178,22 @@ public class AlgoritmoGenetico {
     }
 
     public void crossOver(Cromossomo[] _populacao, Cromossomo[] _populacaoIntermediaria) {
-        for (int i=0; i < TAMANHO_POPULACAO; i++) {
+        for (int i=0; i < TAMANHO_POPULACAO - 1; i++) {
             int individuo1 = torneio(_populacao);
             int individuo2 = torneio(_populacao);
 
             for (int j = 0; j < 10; j++) {
                 _populacaoIntermediaria[i].pesos[j] = _populacao[individuo1].pesos[j];
+                if(_populacaoIntermediaria[i + 1] == null) {
+                    _populacaoIntermediaria[i + 1] = new Cromossomo(oculta, saida);
+                }
                 _populacaoIntermediaria[i + 1].pesos[j] = _populacao[individuo2].pesos[j];
             }
             for (int j = 10; j < 20; j++) {
                 _populacaoIntermediaria[i].pesos[j] = _populacao[individuo2].pesos[j];
+                if(_populacaoIntermediaria[i + 1] == null) {
+                    _populacaoIntermediaria[i + 1] = new Cromossomo(oculta, saida);
+                }
                 _populacaoIntermediaria[i + 1].pesos[j] = _populacao[individuo1].pesos[j];
             }
         }
