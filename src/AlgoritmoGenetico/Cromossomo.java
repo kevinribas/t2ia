@@ -8,13 +8,15 @@ public class Cromossomo {
 
     public double aptidao;
 
-    public static Cromossomo random(int oculta, int saida) {
+    public Cromossomo(int oculta, int saida) {
         int pesosOculta = oculta + 1; //numero de pesos por neuronio da camada oculta
         int pesosSaida = saida + 1;  //numero de pesos por neuronio da camada de saida
         int totalPesos = pesosOculta * oculta + pesosSaida * saida;
+        this.pesos = new double[totalPesos];
+    }
 
-        Cromossomo c = new Cromossomo();
-        c.pesos = new double[totalPesos];
+    public static Cromossomo random(int oculta, int saida) {
+        Cromossomo c = new Cromossomo(oculta, saida);
 
         for (int i = 0; i < c.pesos.length; i++) {
             c.pesos[i] = gera.nextDouble();
