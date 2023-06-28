@@ -22,17 +22,4 @@ public class Cromossomo {
         }
         return c;
     }
-
-    public int getTamanhoPesos() {
-        return this.pesos.length;
-    }
-
-    public double getPesos(int posicao) {
-        return this.pesos[posicao];
-    }
-
-    public void setPeso(int posicao, double _peso) {
-        this.pesos[posicao] = _peso;
-    }
-
 }
