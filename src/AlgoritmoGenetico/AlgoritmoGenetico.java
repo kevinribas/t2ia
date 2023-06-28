@@ -23,21 +23,18 @@ public class AlgoritmoGenetico {
 
         for (int i = 0; i < this.populacao.length; i++) {
             populacao[i] = Cromossomo.random(oculta, saida);
+            printCromossomo(populacao[i]);
         }
+        // funciona até aqui, verificar problema abaixo!!!
 
         Cromossomo[] populacaoIntermediaria = new Cromossomo[TAMANHO_POPULACAO];
 
-//        30 Gerações
-//        for (int g = 1; g <= 30; g++) { // inicio da geracao
-//            System.out.println("\n\nGeração: " + g);
-
         for (Cromossomo cromossomo : populacao) {
-           rede.setPesosNaRede(tabuleiro.length, cromossomo.pesos);
-           aptidao(cromossomo);
+            rede.setPesosNaRede(tabuleiro.length, cromossomo.pesos);
+            cromossomo.aptidao = aptidao(tabuleiroVelha);
+            System.out.println("Cromossomo -> " + cromossomo.aptidao);
         }
-//        } // Fim da geração
 
-        // Seta o primeiro cromossomo, vindo do elitismo da atual
         populacaoIntermediaria[0] = elitismo(populacao);
 
         crossOver(populacao, populacaoIntermediaria);
@@ -46,6 +43,17 @@ public class AlgoritmoGenetico {
         if (aleatorio.nextInt(2) == 0) {
             mutacao(populacao);
         }
+    }
+
+    public void printCromossomo (Cromossomo _cromossomo) {
+        System.out.println("------------------------");
+        System.out.println("Cromossomo: ");
+        int tamanho = _cromossomo.pesos.length;
+        for (int i = 0; i < tamanho; i++) {
+            System.out.println("Pos -> " + i + " Peso -> " + _cromossomo.pesos[i]);
+        }
+        System.out.println("Aptidao do cromossomo -> " + _cromossomo.aptidao);
+        System.out.println("------------------------");
     }
 
     public void tabuleiroInit () {
@@ -88,9 +96,74 @@ public class AlgoritmoGenetico {
         }
     }
 
-    public void aptidao(Cromossomo _cromossomo) {
-//        FINGINDO QUE FEZ UM CALCULO:
-        _cromossomo.aptidao = 0.3d;
+    public double aptidao(int[][] tabuleiro) {
+        double pontuacao = (double) 0;
+    
+        if (venceu(tabuleiro, 1)) {
+            pontuacao+= (double) 100;
+        } else if (empatou(tabuleiro)) {
+            pontuacao+= (double) 30;
+        } else {
+            pontuacao+= (double) -100;
+        }
+
+        pontuacao+= numeroDeRounds(tabuleiro);
+        return pontuacao;
+    }
+
+    private int numeroDeRounds(int[][] tabuleiro) {
+        int qntRodadas = 0;
+        for (int i = 0; i < tabuleiro.length; i++) {
+            for (int j = 0; j < tabuleiro.length; j++) {
+                if (tabuleiro[i][j] == 1) {
+                    qntRodadas++;
+                }
+            }
+        }
+
+        if (qntRodadas == 1) {
+            return 10;
+        } else if (qntRodadas == 2) {
+            return 20;
+        } else if (qntRodadas == 3) {
+            return 30;
+        } else {
+            return 40;
+        }
+    }
+
+    private boolean empatou(int[][] board) {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (board[i][j] == -1) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private boolean venceu(int[][] board, int player) {
+        for (int i = 0; i < 3; i++) {
+            if (board[i][0] == player && board[i][1] == player && board[i][2] == player) {
+                return true;
+            }
+        }
+        for (int j = 0; j < 3; j++) {
+            if (board[0][j] == player && board[1][j] == player && board[2][j] == player) {
+                return true;
+            }
+        }
+
+        if (board[0][0] == player && board[1][1] == player && board[2][2] == player) {
+            return true;
+        }
+        if (board[0][2] == player && board[1][1] == player && board[2][0] == player) {
+            return true;
+        }
+
+        return false;
     }
 
     // pronto
