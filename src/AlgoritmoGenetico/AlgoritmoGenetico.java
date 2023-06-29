@@ -53,7 +53,7 @@ public class AlgoritmoGenetico {
                 somatorioAptidao += cromossomo.aptidao;
 
 //                Seleciona para salvar e jogar depois
-                if (melhorCromossomo == null || melhorCromossomo.aptidao < cromossomo.aptidao) {
+                if (melhorCromossomo == null || melhorCromossomo.aptidao <= cromossomo.aptidao) {
                     melhorCromossomo = new Cromossomo(cromossomo); // Construtor que copia pesos (e gera outra referencia)
                 }
             }
