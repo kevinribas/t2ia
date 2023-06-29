@@ -156,7 +156,7 @@ public class AlgoritmoGenetico {
         System.out.println("O MELHOR CROMOSSOMO TEVE APTIDAO: " + ag.melhorCromossomo.aptidao);
 
         LocalDateTime localDate = LocalDateTime.now();
-        String filename = localDate.getYear() + "-" + localDate.getMonth() + "-" + localDate.getDayOfMonth() + " " + localDate.getHour() + "-" + localDate.getMinute() + "-" + localDate.getSecond();
+        String filename = localDate.getYear() + "-" + localDate.getMonthValue() + "-" + localDate.getDayOfMonth() + " " + localDate.getHour() + "-" + localDate.getMinute() + "-" + localDate.getSecond();
         GerenciadorArquivos.geraArquivo(filename, Arrays.stream(ag.melhorCromossomo.pesos).mapToObj(Double::toString).toArray(String[]::new));
     }
 }
