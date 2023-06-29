@@ -43,7 +43,7 @@ public class Minimax {
         return melhor;
     }
 
-    public Sucessor getMelhorFacil() {
+    public Sucessor getMelhorAleatorio() {
         Sucessor[] pos = new Sucessor[10];
         int count = 0;
         for (int i = 0; i < estado.length; i++) {

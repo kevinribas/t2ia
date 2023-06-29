@@ -8,6 +8,12 @@ public class Cromossomo {
 
     public double aptidao;
 
+    public Cromossomo(Cromossomo c) {
+        this.pesos = new double[c.pesos.length];
+        System.arraycopy(c.pesos, 0, this.pesos, 0, c.pesos.length);
+        this.aptidao = c.aptidao;
+    }
+
     public Cromossomo(int oculta, int saida) {
         int pesosOculta = oculta + 1; //numero de pesos por neuronio da camada oculta
         int pesosSaida = saida + 1;  //numero de pesos por neuronio da camada de saida
@@ -29,10 +35,10 @@ public class Cromossomo {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("------------------------");
-        sb.append("\nCromossomo: ");
+        sb.append("\nPesos do cromossomo:");
         int tamanho = this.pesos.length;
         for (int i = 0; i < tamanho; i++) {
-            sb.append("\nPos -> ").append(i).append(" Peso -> ").append(this.pesos[i]);
+            sb.append("\n[").append(i).append("]: ").append(this.pesos[i]);
         }
         sb.append("\nAptidao do cromossomo -> ").append(this.aptidao);
         sb.append("\n------------------------");

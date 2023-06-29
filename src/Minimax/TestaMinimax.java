@@ -2,6 +2,8 @@ package src.Minimax;
 
 import src.Rede.Sucessor;
 
+import java.util.Random;
+
 /**
  * Write a description of class src.Jogo.Tabuleiro here.
  *
@@ -34,11 +36,19 @@ public class TestaMinimax {
      */
     public Sucessor joga() {
         Minimax mini = new Minimax(velha);
+        Random r = new Random();
+
         switch (dificuldade) {
             case FACIL:
-                return mini.getMelhorFacil();
+                if (r.nextInt(5) == 0) { // 20% de chance
+                    return mini.getMelhorAB();
+                }
+                return mini.getMelhorAleatorio();
             case MEDIO:
-                return mini.getMelhor();
+                if (r.nextInt(2) == 0) { // 50% de chance
+                    return mini.getMelhorAB();
+                }
+                return mini.getMelhorAleatorio();
             default:
                 return mini.getMelhorAB(); // chama versão Alfa Beta Pruning
         }

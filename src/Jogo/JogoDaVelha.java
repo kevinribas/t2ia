@@ -1,14 +1,11 @@
 package src.Jogo;
-/**
- * Write a description of class src.Jogo.JogoDaVelha here.
- *
- * @author (your name)
- * @version (a version number or a date)
- */
 
 import java.util.Scanner;
 
 public class JogoDaVelha {
+    private Jogador playerX = Jogador.Usuario;
+    private Jogador playerO = Jogador.Minimax;
+
     public static void main(String args[]) {
         Tabuleiro tabu = new Tabuleiro();
         int r = 10;
@@ -47,6 +44,5 @@ public class JogoDaVelha {
             col = in.nextInt();
         } while (lin < 0 || lin > 2 || col < 0 || col > 2 || tabu.ocupada(lin, col));
         tabu.alteraPosicao(lin, col, 'X');
-
     }
 }

@@ -60,13 +60,13 @@ public class TestaRede {
             // System.out.print(cromossomo[i] + " ");
         }
 
-        //Setando os pesos na rede
+        // Setando os pesos na rede
         rn.setPesosNaRede(tabuleiro.length, cromossomo);  //
 
         System.out.println();
 
-        //Exibe rede neural
-        System.out.println("src.Rede.src.Rede Neural - Pesos: ");
+        // Exibe rede neural
+        System.out.println("Rede Neural - Pesos: ");
         System.out.println(rn);
 
         //--------------EXEMPLO DE EXECUCAO ----------------------------------------
@@ -75,9 +75,9 @@ public class TestaRede {
             System.out.println("\n\n>>>RODADA: " + n);
             //Exibe um exemplo de propagação : saida dos neurônios da camada de saída
             double[] saidaRede = rn.propagacao(tabuleiro);
-            System.out.println("src.Rede.src.Rede Neural - Camada de Saida: Valor de Y");
+            System.out.println("Rede Neural - Camada de Saida: Valor de Y");
             for (int i = 0; i < saidaRede.length; i++) {
-                System.out.println("src.Rede.Neuronio " + i + " : " + saidaRede[i]);
+                System.out.println("Neuronio " + i + " : " + saidaRede[i]);
             }
 
             //Define posicao a jogar de acordo com rede
@@ -91,8 +91,8 @@ public class TestaRede {
             }
             int linha = indMaior / 3;
             int coluna = indMaior % 3;
-            System.out.println("src.Rede.Neuronio de maior valor: " + indMaior + " - " + saidaRede[indMaior]);
-            System.out.println(">>> src.Rede.src.Rede escolheu - Linha: " + linha + " Coluna: " + coluna);
+            System.out.println("Neuronio de maior valor: " + indMaior + " - " + saidaRede[indMaior]);
+            System.out.println(">>> Rede escolheu - Linha: " + linha + " Coluna: " + coluna);
 
             if (tabuleiroVelha[linha][coluna] != -1) {
                 System.out.println("Posicao ocupada");
@@ -100,7 +100,7 @@ public class TestaRede {
             } else {
                 tabuleiroVelha[linha][coluna] = 1;
 
-                System.out.println("\nsrc.Jogo.Tabuleiro apos jogada: ");
+                System.out.println("\nTabuleiro apos jogada: ");
                 for (int i = 0; i < tabuleiroVelha.length; i++) {
                     for (int j = 0; j < tabuleiroVelha.length; j++) {
                         System.out.print(tabuleiroVelha[i][j] + "\t");
@@ -120,7 +120,7 @@ public class TestaRede {
             else {
                 tabuleiroVelha[melhor.getLinha()][melhor.getColuna()] = 0;
 
-                System.out.println("\nsrc.Jogo.Tabuleiro apos jogada: ");
+                System.out.println("\nTabuleiro apos jogada: ");
                 for (int i = 0; i < tabuleiroVelha.length; i++) {
                     for (int j = 0; j < tabuleiroVelha.length; j++) {
                         System.out.print(tabuleiroVelha[i][j] + "\t");
