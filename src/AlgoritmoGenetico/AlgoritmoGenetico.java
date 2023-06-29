@@ -2,175 +2,94 @@ package src.AlgoritmoGenetico;
 
 import java.util.Random;
 
-import src.Rede.Rede;
-
-
 public class AlgoritmoGenetico {
-    private static final int TAMANHO_POPULACAO = 20;
-    private static final int oculta = 9; // numero de neuronios da camada oculta
-    private static final int saida = 9;  // numero de neuronios da camada de saida
-    private Rede rede = new Rede(oculta, saida);
+    private static int TAMANHO_POPULACAO = 20;
+    private static int oculta = 9; // numero de neuronios da camada oculta
+    private static int saida = 9;  // numero de neuronios da camada de saida
+
     private Cromossomo[] populacao;
-    
-    private double[] tabuleiro;
-    private int[][] tabuleiroVelha;
+    private final Random aleatorio = new Random();
 
-
-    public AlgoritmoGenetico() {
-        tabuleiroInit();
-        Random aleatorio = new Random();
+    public AlgoritmoGenetico(int tamanhoPopulacao, int neuroniosCamadaOculta, int neuroniosCamadaSaida) {
+        TAMANHO_POPULACAO = tamanhoPopulacao;
+        oculta = neuroniosCamadaOculta;
+        saida = neuroniosCamadaSaida;
         this.populacao = new Cromossomo[TAMANHO_POPULACAO];
+    }
 
+    public void executar(int geracoes) {
         for (int i = 0; i < this.populacao.length; i++) {
             populacao[i] = Cromossomo.random(oculta, saida);
-            printCromossomo(populacao[i]);
-        }
-        // funciona até aqui, verificar problema abaixo!!!
-
-        Cromossomo[] populacaoIntermediaria = new Cromossomo[TAMANHO_POPULACAO];
-
-        for (Cromossomo cromossomo : populacao) {
-            rede.setPesosNaRede(tabuleiro.length, cromossomo.pesos);
-            cromossomo.aptidao = aptidao(tabuleiroVelha);
-            System.out.println("Cromossomo -> " + cromossomo.aptidao);
+//          printCromossomo(populacao[i]);
         }
 
-        populacaoIntermediaria[0] = elitismo(populacao);
+        for (int g = 1; g <= geracoes; g++) {
+            Cromossomo[] populacaoIntermediaria = new Cromossomo[TAMANHO_POPULACAO];
+            System.out.println("\nGeração " + g);
 
-        crossOver(populacao, populacaoIntermediaria);
-        populacao = populacaoIntermediaria;
 
-        if (aleatorio.nextInt(2) == 0) {
-            mutacao(populacao);
-        }
-    }
+            for (Cromossomo cromossomo : populacao) {
+                JogoRede jg = new JogoRede(oculta, saida, cromossomo);
+//              Jogar
+                jg.jogar();
 
-    public void printCromossomo (Cromossomo _cromossomo) {
-        System.out.println("------------------------");
-        System.out.println("Cromossomo: ");
-        int tamanho = _cromossomo.pesos.length;
-        for (int i = 0; i < tamanho; i++) {
-            System.out.println("Pos -> " + i + " Peso -> " + _cromossomo.pesos[i]);
-        }
-        System.out.println("Aptidao do cromossomo -> " + _cromossomo.aptidao);
-        System.out.println("------------------------");
-    }
+//              Computar aptidão
+                cromossomo.aptidao = aptidao(jg);
+                if (cromossomo.aptidao >= 70) {
+                    jg.printaJogo();
+                    System.out.println("Aptidão Cromossomo -> " + cromossomo.aptidao);
+                }
+            }
 
-    public void tabuleiroInit () {
-        tabuleiroVelha = new int[][]{{-1, -1, -1},            //-1: celula livre  1: X   0: O
-                {-1, -1, -1},
-                {-1, -1, -1}};
+            populacaoIntermediaria[0] = elitismo(populacao);
 
-        // System.out.println("\f\nsrc.Jogo.Tabuleiro inicial: ");
-        // for (int i = 0; i < tabuleiroVelha.length; i++) {
-        //     for (int j = 0; j < tabuleiroVelha.length; j++) {
-        //         System.out.print(tabuleiroVelha[i][j] + " \t");
-        //     }
-        //     System.out.println();
-        // }
+            crossOver(populacao, populacaoIntermediaria);
+            populacao = populacaoIntermediaria;
 
-        //tabuleiro de teste - conversao de matriz para vetor      
-        tabuleiro = new double[tabuleiroVelha.length * tabuleiroVelha.length];
-        int k = 0;
-        for (int i = 0; i < tabuleiroVelha.length; i++) {
-            for (int j = 0; j < tabuleiroVelha.length; j++) {
-                tabuleiro[k] = tabuleiroVelha[i][j];
-                k++;
+            if (aleatorio.nextInt(2) == 0) {
+                mutacao(populacao);
             }
         }
     }
 
     public static void mutacao(Cromossomo[] _populacao) {
-        Random random = new Random();
-        int quantidade = random.nextInt(3) + 1;
+        Random aleatorio = new Random();
 
-        // testar removendo o while no furuto
-        while (quantidade > 0) {
-            int linha = random.nextInt(_populacao.length) + 1;
-            int coluna = random.nextInt(TAMANHO_POPULACAO);
+        int indexCromossomoAleatorio = aleatorio.nextInt(TAMANHO_POPULACAO - 1) + 1;
+        int quantidadeDeGenesQueSeraoMutados = 20; // dos 180 genes
+        while (quantidadeDeGenesQueSeraoMutados > 0) {
+            int indexAleatorioPeso = aleatorio.nextInt(_populacao[0].pesos.length);
 
-            if (_populacao[linha].pesos[coluna] == 0) _populacao[linha].pesos[coluna] = 1;
-            else _populacao[linha].pesos[coluna] = 0;
-            // System.out.println("Mutacao no cromossomo: " + linha + " na coluna: " + coluna);
-            quantidade--;
+            _populacao[indexCromossomoAleatorio].pesos[indexAleatorioPeso] = aleatorio.nextDouble();
+            quantidadeDeGenesQueSeraoMutados--;
         }
+
     }
 
-    public double aptidao(int[][] tabuleiro) {
+    public double aptidao(JogoRede jogoRede) {
         double pontuacao = 0d;
-    
-        if (venceu(tabuleiro, 1)) {
-            pontuacao+= (double) 100;
-        } else if (empatou(tabuleiro)) {
-            pontuacao+= (double) 30;
+
+        if (jogoRede.venceu(1)) {
+            pontuacao += 100;
+            pontuacao += jogoRede.numeroDeRounds(false);
+        } else if (jogoRede.empatou()) {
+            pontuacao += 30;
+            pontuacao += jogoRede.numeroDeRounds(true);
+        } else if (jogoRede.venceu(0)) {
+            pontuacao += -100;
+            pontuacao += jogoRede.numeroDeRounds(true);
         } else {
-            pontuacao+= (double) -100;
+            pontuacao += -500;
         }
 
-        pontuacao+= numeroDeRounds(tabuleiro);
         return pontuacao;
-    }
-
-    private int numeroDeRounds(int[][] tabuleiro) {
-        int qntRodadas = 0;
-        for (int[] linha : tabuleiro) {
-            for (int j = 0; j < tabuleiro.length; j++) {
-                if (linha[j] == 1) {
-                    qntRodadas++;
-                }
-            }
-        }
-
-        if (qntRodadas == 1) {
-            return 10;
-        } else if (qntRodadas == 2) {
-            return 20;
-        } else if (qntRodadas == 3) {
-            return 30;
-        } else {
-            return 40;
-        }
-    }
-
-    private boolean empatou(int[][] board) {
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (board[i][j] == -1) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
-    private boolean venceu(int[][] board, int player) {
-        for (int i = 0; i < 3; i++) {
-            if (board[i][0] == player && board[i][1] == player && board[i][2] == player) {
-                return true;
-            }
-        }
-        for (int j = 0; j < 3; j++) {
-            if (board[0][j] == player && board[1][j] == player && board[2][j] == player) {
-                return true;
-            }
-        }
-
-        if (board[0][0] == player && board[1][1] == player && board[2][2] == player) {
-            return true;
-        }
-        if (board[0][2] == player && board[1][1] == player && board[2][0] == player) {
-            return true;
-        }
-
-        return false;
     }
 
     // pronto
     public Cromossomo elitismo(Cromossomo[] _populacao) {
-        Cromossomo cromoPopu = populacao[0];
-        for (Cromossomo cromossomo : populacao) {
-            if (cromossomo.aptidao < cromoPopu.aptidao) {
+        Cromossomo cromoPopu = _populacao[0];
+        for (Cromossomo cromossomo : _populacao) {
+            if (cromossomo.aptidao > cromoPopu.aptidao) {
                 cromoPopu = cromossomo;
             }
         }
@@ -178,23 +97,15 @@ public class AlgoritmoGenetico {
     }
 
     public void crossOver(Cromossomo[] _populacao, Cromossomo[] _populacaoIntermediaria) {
-        for (int i=0; i < TAMANHO_POPULACAO - 1; i++) {
+        for (int i = 0; i < TAMANHO_POPULACAO; i++) {
+            _populacaoIntermediaria[i] = new Cromossomo(oculta, saida);
+
             int individuo1 = torneio(_populacao);
             int individuo2 = torneio(_populacao);
 
-            for (int j = 0; j < 10; j++) {
-                _populacaoIntermediaria[i].pesos[j] = _populacao[individuo1].pesos[j];
-                if(_populacaoIntermediaria[i + 1] == null) {
-                    _populacaoIntermediaria[i + 1] = new Cromossomo(oculta, saida);
-                }
-                _populacaoIntermediaria[i + 1].pesos[j] = _populacao[individuo2].pesos[j];
-            }
-            for (int j = 10; j < 20; j++) {
-                _populacaoIntermediaria[i].pesos[j] = _populacao[individuo2].pesos[j];
-                if(_populacaoIntermediaria[i + 1] == null) {
-                    _populacaoIntermediaria[i + 1] = new Cromossomo(oculta, saida);
-                }
-                _populacaoIntermediaria[i + 1].pesos[j] = _populacao[individuo1].pesos[j];
+            for (int j = 0; j < _populacaoIntermediaria[i].pesos.length; j++) {
+                _populacaoIntermediaria[i].pesos[j] = (_populacao[individuo1].pesos[j] + _populacao[individuo2].pesos[j]) / 2;
+//                System.out.println(_populacaoIntermediaria[i].pesos[j]);
             }
         }
     }
@@ -207,13 +118,14 @@ public class AlgoritmoGenetico {
         int val2 = random.nextInt(TAMANHO_POPULACAO);
 
         if (_populacao[val1].aptidao > _populacao[val2].aptidao) {
-            return val2;
+            return val1;
         }
 
-        return val1;
+        return val2;
     }
 
     public static void main(String[] args) {
-        new AlgoritmoGenetico();
+        AlgoritmoGenetico ag = new AlgoritmoGenetico(20, 9, 9);
+        ag.executar(3000);
     }
 }

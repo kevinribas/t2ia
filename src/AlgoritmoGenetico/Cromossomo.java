@@ -24,4 +24,18 @@ public class Cromossomo {
         }
         return c;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("------------------------");
+        sb.append("\nCromossomo: ");
+        int tamanho = this.pesos.length;
+        for (int i = 0; i < tamanho; i++) {
+            sb.append("\nPos -> ").append(i).append(" Peso -> ").append(this.pesos[i]);
+        }
+        sb.append("\nAptidao do cromossomo -> ").append(this.aptidao);
+        sb.append("\n------------------------");
+        return sb.toString();
+    }
 }

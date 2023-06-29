@@ -22,7 +22,7 @@ public class TestaRede {
                 {-1, -1, -1},
                 {-1, -1, -1}};
 
-        System.out.println("\f\nsrc.Jogo.Tabuleiro inicial: ");
+        System.out.println("\f\nTabuleiro inicial: ");
         for (int i = 0; i < tabuleiroVelha.length; i++) {
             for (int j = 0; j < tabuleiroVelha.length; j++) {
                 System.out.print(tabuleiroVelha[i][j] + " \t");
@@ -94,8 +94,10 @@ public class TestaRede {
             System.out.println("src.Rede.Neuronio de maior valor: " + indMaior + " - " + saidaRede[indMaior]);
             System.out.println(">>> src.Rede.src.Rede escolheu - Linha: " + linha + " Coluna: " + coluna);
 
-            if (tabuleiroVelha[linha][coluna] != -1) System.out.println("Posicao ocupada");
-            else {
+            if (tabuleiroVelha[linha][coluna] != -1) {
+                System.out.println("Posicao ocupada");
+                break;
+            } else {
                 tabuleiroVelha[linha][coluna] = 1;
 
                 System.out.println("\nsrc.Jogo.Tabuleiro apos jogada: ");
@@ -139,7 +141,6 @@ public class TestaRede {
     }
 
     public static void main(String args[]) {
-
         TestaRede teste = new TestaRede();
     }
 
